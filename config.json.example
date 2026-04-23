@@ -1,0 +1,7 @@
+{
+  "ntfy_topic_prefix": "spc-meals-yourname",
+  "ntfy_base_url": "https://ntfy.sh",
+  "meals_url": "https://www.spc.ox.ac.uk/student-life/living-at-st-peters/meals",
+  "log_file": "/path/to/SPC_meals/meals_notifier.log",
+  "request_timeout_seconds": 15
+}

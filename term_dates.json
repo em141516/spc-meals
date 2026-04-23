@@ -1,0 +1,25 @@
+{
+  "terms": [
+    {"name": "Michaelmas", "start": "2025-10-12"},
+    {"name": "Hilary",     "start": "2026-01-18"},
+    {"name": "Trinity",    "start": "2026-04-26"},
+    {"name": "Michaelmas", "start": "2026-10-11"},
+    {"name": "Hilary",     "start": "2027-01-17"},
+    {"name": "Trinity",    "start": "2027-04-25"},
+    {"name": "Michaelmas", "start": "2027-10-10"},
+    {"name": "Hilary",     "start": "2028-01-16"},
+    {"name": "Trinity",    "start": "2028-04-23"},
+    {"name": "Michaelmas", "start": "2028-10-08"},
+    {"name": "Hilary",     "start": "2029-01-14"},
+    {"name": "Trinity",    "start": "2029-04-22"},
+    {"name": "Michaelmas", "start": "2029-10-07"},
+    {"name": "Hilary",     "start": "2030-01-13"},
+    {"name": "Trinity",    "start": "2030-04-28"},
+    {"name": "Michaelmas", "start": "2030-10-13"},
+    {"name": "Hilary",     "start": "2031-01-19"},
+    {"name": "Trinity",    "start": "2031-04-27"},
+    {"name": "Michaelmas", "start": "2031-10-12"},
+    {"name": "Hilary",     "start": "2032-01-18"},
+    {"name": "Trinity",    "start": "2032-04-25"}
+  ]
+}
