@@ -38,7 +38,7 @@ If you want to run this independently (so notifications don't depend on someone 
 **Requirements:** macOS, Python 3
 
 ```bash
-git clone https://github.com/ewmitchell/spc-meals.git
+git clone https://github.com/em141516/spc-meals.git
 cd spc-meals
 cp config.json.example config.json
 # Edit config.json: set log_file to an absolute path on your machine,
