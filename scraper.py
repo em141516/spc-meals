@@ -174,6 +174,26 @@ def _parse_dates_from_text(text: str, year: int) -> list[date]:
     return dates
 
 
+def _h2_date_range(h2: str, year: int) -> tuple[date, date] | None:
+    """Extract (start, end) from an h2 like '... (20-26 April)' or '... (27 April-3 May)'."""
+    m = re.search(r'\(([^)]+)\)', h2)
+    if not m:
+        return None
+    content = m.group(1)
+    dates = _parse_dates_from_text(content, year)
+    if len(dates) == 2:
+        return dates[0], dates[1]
+    if len(dates) == 1:
+        # Same-month range like "20-26 April": find both numbers, share the one month
+        nums = [int(n) for n in re.findall(r'\d+', content)]
+        if len(nums) == 2:
+            try:
+                return date(year, dates[0].month, nums[0]), dates[0]
+            except ValueError:
+                pass
+    return None
+
+
 def _date_in_range(text: str, today: date) -> bool | None:
     """Check if today's date appears in a vacation-style date line.
 
@@ -217,6 +237,30 @@ def find_times_for_today(blocks: list[dict], today: date) -> dict:
 
     result = {}
 
+    # New format: h2 contains a parenthetical date range, h3 is the meal type
+    for block in blocks:
+        r = _h2_date_range(block["h2"], today.year)
+        if r is None or not (r[0] <= today <= r[1]):
+            continue
+        meal = block["h3"]
+        if meal not in ("breakfast", "brunch", "supper", "lunch"):
+            continue
+        if is_weekend and meal == "breakfast":
+            continue
+        if not is_weekend and meal == "brunch":
+            continue
+        if text_mentions_day(block["text"], day_name):
+            if "closed" in block["text"].lower():
+                result[f"{meal}_closed"] = block["text"]
+            else:
+                time_str = extract_time_from_text(block["text"])
+                if time_str and meal not in result:
+                    result[meal] = time_str
+
+    if result:
+        return result
+
+    # Old format fallback
     vacation_blocks = [b for b in blocks if any(m in b["h2"].lower() for m in MONTH_NAMES)]
     term_blocks = [b for b in blocks if b not in vacation_blocks]
 
@@ -276,7 +320,13 @@ def find_menu_for_meal(blocks: list[dict], meal_type: str, today: date) -> list[
         return []
     day_name = DAY_NAMES[today.weekday()]
     for b in blocks:
-        if b["h2"].lower() == menu_h2 and b["h3"].lower().startswith(day_name):
+        h2_lower = b["h2"].lower()
+        if not (h2_lower == menu_h2 or h2_lower.startswith(menu_h2 + " -")):
+            continue
+        r = _h2_date_range(b["h2"], today.year)
+        if r and not (r[0] <= today <= r[1]):
+            continue
+        if b["h3"].lower().startswith(day_name):
             return [b["text"]]
     return []
 
