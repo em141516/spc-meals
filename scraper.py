@@ -321,7 +321,7 @@ def find_menu_for_meal(blocks: list[dict], meal_type: str, today: date) -> list[
     day_name = DAY_NAMES[today.weekday()]
     for b in blocks:
         h2_lower = b["h2"].lower()
-        if not (h2_lower == menu_h2 or h2_lower.startswith(menu_h2 + " -")):
+        if not (h2_lower == menu_h2 or h2_lower.startswith(menu_h2 + " ")):
             continue
         r = _h2_date_range(b["h2"], today.year)
         if r and not (r[0] <= today <= r[1]):
