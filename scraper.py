@@ -326,7 +326,7 @@ def find_menu_for_meal(blocks: list[dict], meal_type: str, today: date) -> list[
         r = _h2_date_range(b["h2"], today.year)
         if r and not (r[0] <= today <= r[1]):
             continue
-        if b["h3"].lower().startswith(day_name):
+        if re.search(r'\b' + day_name + r'\b', b["h3"].lower()):
             return [b["text"]]
     return []
 
